@@ -262,9 +262,24 @@ LOGGING = {
 # ------------------------------------------------------------------------------
 ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_AUTHENTICATION_METHOD = "username"
+ACCOUNT_AUTHENTICATION_METHOD = "email"
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 3
+ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 86400
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7
+ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = False
+ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_MAX_EMAIL_ADDRESSES = 3
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+ACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_SESSION_REMEMBER = True
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
+ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
+ACCOUNT_UNIQUE_EMAIL = True
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
