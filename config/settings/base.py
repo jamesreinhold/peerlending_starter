@@ -42,7 +42,7 @@ LOCALE_PATHS = [str(ROOT_DIR / "locale")]
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
 DATABASES = {
-    "default": env.db("DATABASE_URL", default="postgres:///peer2peer"),
+    "default": env.db("DATABASE_URL", default="postgres:///peer_lending_starter"),
 }
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
