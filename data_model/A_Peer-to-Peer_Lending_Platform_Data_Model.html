@@ -1,0 +1,5353 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <style>
+
+body {
+    font: normal normal normal 14px Helvetica, Arial, Sans-serif;
+    background: white;
+}
+
+div.header { text-align: center; }
+
+table {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 0.5em;
+}
+
+pre {
+    white-space: pre-wrap;
+}
+
+</style>
+    </head>
+    <body>
+        <div class="header">
+            <p>
+                
+            </p>
+            <h1 class="main-header">
+A Peer-to-Peer Lending Platform Data Model - physical data model documentation            </h1>
+        </div>
+        <div class="generalInfo">
+            <p class="infoField">
+                <strong>
+Database engine:                 </strong>
+ PostgreSQL            </p>
+            <p class="infoField">
+                <strong>
+Version:                 </strong>
+2.3            </p>
+            <p class="infoField">
+                <strong>
+Description:                 </strong>
+            </p>
+        </div>
+        <div class="tableOfContents">
+            <h2>
+Table of contents            </h2>
+            <ol type="1" class="contentsList">
+                <li>
+                    <a href="#tables">
+Tables                    </a>
+                    <ol class="contentsSublist">
+                        <li>
+                            <a href="#tableInvestor">
+investor                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableBorrower">
+borrower                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableInvestorProposal">
+investor_proposal                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableLoanTicket">
+loan_ticket                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableLoanTicketFulfillment">
+loan_ticket_fulfillment                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableLoanRepaymentSchedule">
+loan_repayment_schedule                            </a>
+                        </li>
+                        <li>
+                            <a href="#tablePaymentMethod">
+payment_method                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableNominee">
+nominee                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableAccountStatement">
+account_statement                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableBorrowerLiability">
+borrower_liability                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableBorrowerAsset">
+borrower_asset                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableEmploymentDetail">
+employment_detail                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableTransactionType">
+transaction_type                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableAccountType">
+account_type                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableCountry">
+country                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableStateOrRegion">
+state_or_region                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableCityLocations">
+city_locations                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableBorrowerAddress">
+borrower_address                            </a>
+                        </li>
+                        <li>
+                            <a href="#tablePage">
+page                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableTeamMember">
+team_member                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableWithdrawal">
+withdrawal                            </a>
+                        </li>
+                        <li>
+                            <a href="#tablePayment">
+payment                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableRefund">
+refund                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableBankAccount">
+bank_account                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableCard">
+card                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableTransactionHistory">
+transaction_history                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableLoanGrade">
+loan_grade                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableInvestment">
+investment                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableLoan">
+loan                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableMonthlyPayment">
+monthly_payment                            </a>
+                        </li>
+                        <li>
+                            <a href="#tableCurrency">
+currency                            </a>
+                        </li>
+                    </ol>
+                </li>
+                <li>
+                    <a href="#references">
+References                    </a>
+                    <ol class="contentsSublist">
+                        <li>
+                            <a href="#referenceNomineeInvestor">
+nominee_investor                            </a>
+                        </li>
+                        <li>
+                            <a href="#referencePaymentMethodInvestor">
+payment_method_investor                            </a>
+                        </li>
+                        <li>
+                            <a href="#referenceAccountStatementInvestor">
+account_statement_investor                            </a>
+                        </li>
+                        <li>
+                            <a href="#referenceLoanTicketBorrower">
+loan_ticket_borrower                            </a>
+                        </li>
+                        <li>
+                            <a href="#referenceBorrowerLiabilityLoanTicket">
+borrower_liability_loan_ticket                            </a>
+                        </li>
+                        <li>
+                            <a href="#referenceBorrowerAssetLoanTicket">
+borrower_asset_loan_ticket                            </a>
+                        </li>
+                        <li>
+                            <a href="#referenceEmploymentDetailBorrower">
+employment_detail_borrower                            </a>
+                        </li>
+                        <li>
+                            <a href="#referenceInvestorProposalInvestor">
+investor_proposal_investor                            </a>
+                        </li>
+                        <li>
+                            <a href="#referenceInvestorProposalLoanTicket">
+investor_proposal_loan_ticket                            </a>
+                        </li>
+                        <li>
+                            <a href="#referenceLoanTktFflInvestorPrp">
+loan_tkt_ffl_investor_prp                            </a>
+                        </li>
+                        <li>
+                            <a href="#referenceLoanRepaySchLoanTktFfl">
+loan_repay_sch_loan_tkt_ffl                            </a>
+                        </li>
+                        <li>
+                            <a href="#referenceAccStatementTransType">
+acc_statement_trans_type                            </a>
+                        </li>
+                        <li>
+                            <a href="#referencePaymentMethodAccountType">
+payment_method_account_type                            </a>
+                        </li>
+                        <li>
+                            <a href="#referenceStateOrRegionCountry">
+state_or_region_country                            </a>
+                        </li>
+                        <li>
+                            <a href="#referenceCityLocationsStateOrRegion">
+city_locations_state_or_region                            </a>
+                        </li>
+                        <li>
+                            <a href="#referenceBorrowerAddressBorrower">
+borrower_address_borrower                            </a>
+                        </li>
+                        <li>
+                            <a href="#referenceWithdrawalTransactionHistory">
+withdrawal_transaction_history                            </a>
+                        </li>
+                        <li>
+                            <a href="#referenceWithdrawalBankAccount">
+withdrawal_bank_account                            </a>
+                        </li>
+                        <li>
+                            <a href="#referenceWithdrawalBorrower">
+withdrawal_borrower                            </a>
+                        </li>
+                        <li>
+                            <a href="#referenceInvestmentInvestor">
+investment_investor                            </a>
+                        </li>
+                        <li>
+                            <a href="#referenceInvestmentLoanGrade">
+investment_loan_grade                            </a>
+                        </li>
+                        <li>
+                            <a href="#referenceLoanBorrower">
+loan_borrower                            </a>
+                        </li>
+                        <li>
+                            <a href="#referenceListOfPayments">
+list_of_payments                            </a>
+                        </li>
+                        <li>
+                            <a href="#referenceMonthlyPaymentLoan">
+monthly_payment_loan                            </a>
+                        </li>
+                        <li>
+                            <a href="#referenceMonthlyPaymentPayment">
+monthly_payment_payment                            </a>
+                        </li>
+                        <li>
+                            <a href="#referenceMonthlyPaymentBorrower">
+monthly_payment_borrower                            </a>
+                        </li>
+                        <li>
+                            <a href="#referenceDefaultCurrency">
+default_currency                            </a>
+                        </li>
+                    </ol>
+                </li>
+                <li>
+                    <a href="#areas">
+Areas                    </a>
+                    <ol class="contentsSublist">
+                        <li>
+                            <a href="#areaBorrower">
+Borrower                            </a>
+                        </li>
+                        <li>
+                            <a href="#areaLoan fulfillment and repayment">
+Loan Fulfillment and Repayment                            </a>
+                        </li>
+                        <li>
+                            <a href="#areaInvestor">
+Investor                            </a>
+                        </li>
+                        <li>
+                            <a href="#areaGeolocations">
+Geolocations                            </a>
+                        </li>
+                        <li>
+                            <a href="#areaContent & pages">
+Content & Pages                            </a>
+                        </li>
+                        <li>
+                            <a href="#areaPayments & withdrawals">
+Payments & Withdrawals                            </a>
+                        </li>
+                    </ol>
+                </li>
+            </ol>
+        </div>
+        <div id="tablesDiv">
+            <h2 id="tables">
+1. Tables            </h2>
+            <h3 id="tableInvestor">
+1.1. Table investor            </h3>
+            <h4>
+1.1.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+first_name                        </td>
+                        <td>
+varchar(50)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+last_name                        </td>
+                        <td>
+varchar(50)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+tax_id                        </td>
+                        <td>
+varchar(20)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+date_of_birth                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+contact_number                        </td>
+                        <td>
+varchar(20)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+kyc_complete                        </td>
+                        <td>
+char(1)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+escrow_account_number                        </td>
+                        <td>
+varchar(35)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+investment_limit                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+fund_committed                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableBorrower">
+1.2. Table borrower            </h3>
+            <p class="infoField">
+                <strong>
+Description:                 </strong>
+Privacy rules applied            </p>
+            <h4>
+1.2.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+first_name                        </td>
+                        <td>
+varchar(50)                        </td>
+                        <td>
+                        </td>
+                        <td>
+The legal first names of the borrower                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+last_name                        </td>
+                        <td>
+varchar(50)                        </td>
+                        <td>
+                        </td>
+                        <td>
+The legal last names of the borrower                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+current_address                        </td>
+                        <td>
+varchar(1000)                        </td>
+                        <td>
+                        </td>
+                        <td>
+The current living address of the borrower. Verification is required                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+permanent_address                        </td>
+                        <td>
+varchar(1000)                        </td>
+                        <td>
+                        </td>
+                        <td>
+Permanent living address of the borrower. Verification and privacy rules applies                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+contact_number                        </td>
+                        <td>
+varchar(20)                        </td>
+                        <td>
+                        </td>
+                        <td>
+International format of borrower's contact number. Phone number if provided must be unique                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+date_of_birth                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+Date of birth of borrower. Registered borrowers must be not less than 18 years of age                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+kyc_complete                        </td>
+                        <td>
+boolean                        </td>
+                        <td>
+                        </td>
+                        <td>
+Indication if borrower has completing KYC verification processes                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+highest_qualification                        </td>
+                        <td>
+varchar(50)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+Highest educational qualification of borrower. This is not required but maybe required depending on the amount requested and purpose of loan.                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+passout_year                        </td>
+                        <td>
+date                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+email_address                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+                        </td>
+                        <td>
+Valid email address of the borrower. Check for disposable email address                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+phone_number                        </td>
+                        <td>
+varchar(70)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+Phone number if provided must be unique                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+kyc_status                        </td>
+                        <td>
+varchar(20)                        </td>
+                        <td>
+                        </td>
+                        <td>
+KYC status of the user. This maybe an ENUM with choices (Verified, Unverified, Pending etc.)                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+on_boarding_complete                        </td>
+                        <td>
+boolean                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+on_boarding_complete_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+kyc_submitted                        </td>
+                        <td>
+boolean                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+salutation                        </td>
+                        <td>
+varchar(5)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+job_title                        </td>
+                        <td>
+varchar(20)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+social_security_number                        </td>
+                        <td>
+varchar(20)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+place_of_birth                        </td>
+                        <td>
+varchar(50)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+time_zone                        </td>
+                        <td>
+varchar(50)                        </td>
+                        <td>
+                        </td>
+                        <td>
+The default time zone of the borrower                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+joined_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+Date and time when borrowers account was created                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+modified_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+stripe_id                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+As customers will be created using Stripe, this is the Stripe ID of the client                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+stripe_seller_id                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+pending_cash_balance                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+Amount of money pending in balance                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+verification_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+null                        </td>
+                        <td>
+Date and time when borrowers account was verified                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+registered_ip_address                        </td>
+                        <td>
+varchar(20)                        </td>
+                        <td>
+                        </td>
+                        <td>
+IP address of the borrower captured at the time of registration                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+country_of_residence                        </td>
+                        <td>
+varchar(2)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+The ISO-2 of the country of residence of the borrower                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+currency_id                        </td>
+                        <td>
+uuid                        </td>
+                        <td>
+                        </td>
+                        <td>
+The default currency of the borrower. Currency will be sent against borrowers country of residence.                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableInvestorProposal">
+1.3. Table investor_proposal            </h3>
+            <h4>
+1.3.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+investor_id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+loan_ticket_id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+proposal_amount                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+proposal_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+cancel_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+last_update_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableLoanTicket">
+1.4. Table loan_ticket            </h3>
+            <h4>
+1.4.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+borrower_id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+loan_amount                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+loan_tenure_in_months                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+interest_rate                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+risk_rating                        </td>
+                        <td>
+char(1)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+reason_for_loan                        </td>
+                        <td>
+varchar(1000)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+ability_to_repay                        </td>
+                        <td>
+varchar(4000)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+risk_factors                        </td>
+                        <td>
+varchar(4000)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableLoanTicketFulfillment">
+1.5. Table loan_ticket_fulfillment            </h3>
+            <h4>
+1.5.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+investor_proposal_id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+release_date_from_investor                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+disburse_date_to_borrower                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+pre_emi_amount                        </td>
+                        <td>
+money                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+pre_emi_due_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+emi_amount                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+emi_start_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+emi_end_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+num_of_total_emi                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+pre_closure_flag                        </td>
+                        <td>
+char(1)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+pre_closure_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+last_update_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableLoanRepaymentSchedule">
+1.6. Table loan_repayment_schedule            </h3>
+            <h4>
+1.6.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+loan_ticket_fulfillment_id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+emi_due_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+due_interest_amount                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+due_principal_amount                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+due_emi_amount                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+penalty_amount                        </td>
+                        <td>
+money                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+total_due_amount                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+emi_amount_received                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+penalty_amount_received                        </td>
+                        <td>
+money                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+receive_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+is_emi_payment_defaulted                        </td>
+                        <td>
+char(1)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+is_emi_payment_advanced                        </td>
+                        <td>
+char(1)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tablePaymentMethod">
+1.7. Table payment_method            </h3>
+            <h4>
+1.7.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+investor_id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+account_number                        </td>
+                        <td>
+varchar(35)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+account_type                        </td>
+                        <td>
+char(1)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+account_holder_name                        </td>
+                        <td>
+varchar(100)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+wire_transfer_code                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+bank_name                        </td>
+                        <td>
+varchar(100)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+account_type_code                        </td>
+                        <td>
+char(1)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableNominee">
+1.8. Table nominee            </h3>
+            <h4>
+1.8.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+first_name                        </td>
+                        <td>
+varchar(50)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+last_name                        </td>
+                        <td>
+varchar(50)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+date_of_birth                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+investor_id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+relationship_with_investor                        </td>
+                        <td>
+varchar(20)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableAccountStatement">
+1.9. Table account_statement            </h3>
+            <h4>
+1.9.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+investor_id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+transaction_type_code                        </td>
+                        <td>
+char(1)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+transaction_amount                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+transaction_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+closing_balance                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableBorrowerLiability">
+1.10. Table borrower_liability            </h3>
+            <h4>
+1.10.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+loan_ticket_id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+liability_outstanding                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+monthly_repayment_amount                        </td>
+                        <td>
+decimal(19,2)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+liability_type                        </td>
+                        <td>
+varchar(10)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+liability_start_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+liability_end_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableBorrowerAsset">
+1.11. Table borrower_asset            </h3>
+            <h4>
+1.11.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+loan_ticket_id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+asset_type                        </td>
+                        <td>
+varchar(100)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+asset_value                        </td>
+                        <td>
+decimal(20,2)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+ownership_percentage                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+possession_since                        </td>
+                        <td>
+date                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableEmploymentDetail">
+1.12. Table employment_detail            </h3>
+            <p class="infoField">
+                <strong>
+Description:                 </strong>
+The Employment details of the Borrower            </p>
+            <h4>
+1.12.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+borrower_id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+The ID of the Borrower                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+posting_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+employment_type                        </td>
+                        <td>
+varchar(50)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+profession_type                        </td>
+                        <td>
+varchar(50)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+exp_in_curr_profession_in_yr                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+tenure_with_curr_employer                        </td>
+                        <td>
+int                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+employment_description                        </td>
+                        <td>
+varchar(4000)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+monthly_salary                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableTransactionType">
+1.13. Table transaction_type            </h3>
+            <h4>
+1.13.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+transaction_type_code                        </td>
+                        <td>
+char(1)                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+transaction_type                        </td>
+                        <td>
+varchar(20)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableAccountType">
+1.14. Table account_type            </h3>
+            <h4>
+1.14.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+account_type_code                        </td>
+                        <td>
+char(1)                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+account_type_desc                        </td>
+                        <td>
+varchar(20)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableCountry">
+1.15. Table country            </h3>
+            <p class="infoField">
+                <strong>
+Description:                 </strong>
+Table represents users Countries            </p>
+            <h4>
+1.15.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+name                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+iso2                        </td>
+                        <td>
+varchar(2)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+iso3                        </td>
+                        <td>
+varchar(3)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+currency                        </td>
+                        <td>
+varchar(3)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableStateOrRegion">
+1.16. Table state_or_region            </h3>
+            <p class="infoField">
+                <strong>
+Description:                 </strong>
+Table represents users States or Regions in a Country            </p>
+            <h4>
+1.16.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+name                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+iso2                        </td>
+                        <td>
+varchar(2)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+country                        </td>
+                        <td>
+varchar(3)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+country_id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableCityLocations">
+1.17. Table city_locations            </h3>
+            <h4>
+1.17.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+name                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+state_or_region_id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableBorrowerAddress">
+1.18. Table borrower_address            </h3>
+            <p class="infoField">
+                <strong>
+Description:                 </strong>
+Address of Borrower            </p>
+            <h4>
+1.18.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+address_line_1                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+address_line_2                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+state                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+city                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+zip_code                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+address_type                        </td>
+                        <td>
+varchar(20)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+status                        </td>
+                        <td>
+varchar(10)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+borrower_id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tablePage">
+1.19. Table page            </h3>
+            <p class="infoField">
+                <strong>
+Description:                 </strong>
+Front end pages or Legal Pages. Pages maybe for Privacy policies or Term and conditions            </p>
+            <h4>
+1.19.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+uuid                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+The unique identifier of the page                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+title                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+                        </td>
+                        <td>
+The title of the page. Advisable to keep it short                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+slug                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+                        </td>
+                        <td>
+The url slug of the page. Advisable to keep this short as possible                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+headline                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+Descriptive headline of the page. Optional                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+content                        </td>
+                        <td>
+varchar(5000)                        </td>
+                        <td>
+                        </td>
+                        <td>
+The main body or content of the page. This can contain html                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+meta_keywords                        </td>
+                        <td>
+varchar(255)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+Meta keywords are types of meta tags in the HTML source code of a webpage that describe the content of a website.                         </td>
+                    </tr>
+                    <tr>
+                        <td>
+meta_description                        </td>
+                        <td>
+varchar(250)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+A meta description (sometimes called a meta description attribute or tag) is an HTML element that describes and summarizes the contents of your page for the benefit of users and search engines. Keep this as short as possible.                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+created_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+Date and time when record was created                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+modified_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+Date and time when record was last modified                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableTeamMember">
+1.20. Table team_member            </h3>
+            <p class="infoField">
+                <strong>
+Description:                 </strong>
+A team member is an employee who works in the Company. The data of these team members can be displayed on the About us page or any other dedicated page for this.            </p>
+            <h4>
+1.20.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+uuid                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+The unique identifier of the team member                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+name                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+                        </td>
+                        <td>
+The full name of the team member                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+designation                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+                        </td>
+                        <td>
+Position of the team member                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+photo                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+                        </td>
+                        <td>
+The photo of the team member                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+facebook                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+Facebook url of the team member                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+twitter                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+Twitter handle of the team member                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+linkedlin                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+LinkedIn profile url of the team member                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+created_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+Date and time when record was created                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+modified_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+Date and time when record was last modified                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableWithdrawal">
+1.21. Table withdrawal            </h3>
+            <h4>
+1.21.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+amount                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+fees                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+bank_account_id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+reference                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+transaction_history_id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+status                        </td>
+                        <td>
+varchar(20)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+modified_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+created_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+approved_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+completed_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+borrower_id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tablePayment">
+1.22. Table payment            </h3>
+            <h4>
+1.22.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableRefund">
+1.23. Table refund            </h3>
+            <h4>
+1.23.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableBankAccount">
+1.24. Table bank_account            </h3>
+            <h4>
+1.24.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+dwolla_source_link                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+name                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+number_ending                        </td>
+                        <td>
+varchar(4)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+plaid_account_id                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+plaid_token                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+stripe_bank_id                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+stripe_connect_bank_id                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+stripe_token                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+null                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+type                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+created_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+modified_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableCard">
+1.25. Table card            </h3>
+            <h4>
+1.25.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+card_type                        </td>
+                        <td>
+varchar(50)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+stripe_id                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+card_ending                        </td>
+                        <td>
+varchar(4)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+created_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+modified_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableTransactionHistory">
+1.26. Table transaction_history            </h3>
+            <h4>
+1.26.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableLoanGrade">
+1.27. Table loan_grade            </h3>
+            <h4>
+1.27.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+interest_rate                        </td>
+                        <td>
+decimal                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+label                        </td>
+                        <td>
+varchar(50)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+min                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+max                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+created_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+modified_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableInvestment">
+1.28. Table investment            </h3>
+            <h4>
+1.28.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+amount                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+date_completed                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+date_invested                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+grade                        </td>
+                        <td>
+varchar(1)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+rate                        </td>
+                        <td>
+decimal                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+share                        </td>
+                        <td>
+decimal                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+status                        </td>
+                        <td>
+varchar(20)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+term_months                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+total_interest_gained                        </td>
+                        <td>
+decimal                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+total_return_amount                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+created_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+modified_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+investor_id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+loan_grade_id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableLoan">
+1.29. Table loan            </h3>
+            <h4>
+1.29.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+amount                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+application_step                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+apr                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+balance                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+charge_off_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+current_other_amount                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+current_payment_amount                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+current_payment_type                        </td>
+                        <td>
+varchar(150)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+current_payoff_amount                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+denial_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+funded                        </td>
+                        <td>
+varchar(3)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+funded_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+funding_amount                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+funding_percentage                        </td>
+                        <td>
+decimal                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+interest_balance                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+interest_rate                        </td>
+                        <td>
+decimal                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+investments                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+listed                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+listing_end_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+listing_start_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+loan_agreement                        </td>
+                        <td>
+varchar(120)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+months_since                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+next_monthly_payment_amount                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+origination_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+paid_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+principal_balance                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+purpose                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+submitted_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+status                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+term_months                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+total_interests                        </td>
+                        <td>
+decimal                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+total_interests_paid                        </td>
+                        <td>
+decimal                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+total_paid                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+total_payments_made                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+total_repayment_amount                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+verification_stage                        </td>
+                        <td>
+varchar(120)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+created_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+modified_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+borrower_id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+payment_id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableMonthlyPayment">
+1.30. Table monthly_payment            </h3>
+            <p class="infoField">
+                <strong>
+Description:                 </strong>
+Table represents monthly payments            </p>
+            <h4>
+1.30.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+uuid                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+amount                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+paid_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+balance                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+interest_balance                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+interest_portion                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+principal_balance                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+principal_portion                        </td>
+                        <td>
+money                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+status                        </td>
+                        <td>
+varchar(20)                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+created_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+modified_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+completed_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+loan_id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+payment_id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+borrower_id                        </td>
+                        <td>
+int                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tableCurrency">
+1.31. Table currency            </h3>
+            <h4>
+1.31.1. Columns            </h4>
+            <table class="columnsTable">
+                <thead>
+                    <tr class="titleRow">
+                        <th>
+Column name                        </th>
+                        <th>
+Type                        </th>
+                        <th>
+Properties                        </th>
+                        <th>
+Description                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+id                        </td>
+                        <td>
+uuid                        </td>
+                        <td>
+PK                        </td>
+                        <td>
+The unique identifier of the currency                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+name                        </td>
+                        <td>
+varchar(50)                        </td>
+                        <td>
+                        </td>
+                        <td>
+Name of the currency                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+code                        </td>
+                        <td>
+varchar(3)                        </td>
+                        <td>
+                        </td>
+                        <td>
+The currency code                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+created_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+modified_date                        </td>
+                        <td>
+date                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="referencesDiv">
+            <h2 id="references">
+2. Reference            </h2>
+            <h3 id="referenceNomineeInvestor">
+2.1. Reference nominee_investor            </h3>
+            <h4>
+2.1.1. Columns            </h4>
+            <table class="referencesTable">
+                <tr>
+                    <td>
+                        <a href="#tableInvestor">
+investor                        </a>
+                    </td>
+                    <td>
+0..*                    </td>
+                    <td>
+                        <a href="#tableNominee">
+nominee                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+id                    </td>
+                    <td>
+<->                    </td>
+                    <td>
+investor_id                    </td>
+                </tr>
+            </table>
+            <h3 id="referencePaymentMethodInvestor">
+2.2. Reference payment_method_investor            </h3>
+            <h4>
+2.2.1. Columns            </h4>
+            <table class="referencesTable">
+                <tr>
+                    <td>
+                        <a href="#tableInvestor">
+investor                        </a>
+                    </td>
+                    <td>
+0..*                    </td>
+                    <td>
+                        <a href="#tablePaymentMethod">
+payment_method                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+id                    </td>
+                    <td>
+<->                    </td>
+                    <td>
+investor_id                    </td>
+                </tr>
+            </table>
+            <h3 id="referenceAccountStatementInvestor">
+2.3. Reference account_statement_investor            </h3>
+            <h4>
+2.3.1. Columns            </h4>
+            <table class="referencesTable">
+                <tr>
+                    <td>
+                        <a href="#tableInvestor">
+investor                        </a>
+                    </td>
+                    <td>
+0..*                    </td>
+                    <td>
+                        <a href="#tableAccountStatement">
+account_statement                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+id                    </td>
+                    <td>
+<->                    </td>
+                    <td>
+investor_id                    </td>
+                </tr>
+            </table>
+            <h3 id="referenceLoanTicketBorrower">
+2.4. Reference loan_ticket_borrower            </h3>
+            <h4>
+2.4.1. Columns            </h4>
+            <table class="referencesTable">
+                <tr>
+                    <td>
+                        <a href="#tableBorrower">
+borrower                        </a>
+                    </td>
+                    <td>
+0..*                    </td>
+                    <td>
+                        <a href="#tableLoanTicket">
+loan_ticket                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+id                    </td>
+                    <td>
+<->                    </td>
+                    <td>
+borrower_id                    </td>
+                </tr>
+            </table>
+            <h3 id="referenceBorrowerLiabilityLoanTicket">
+2.5. Reference borrower_liability_loan_ticket            </h3>
+            <h4>
+2.5.1. Columns            </h4>
+            <table class="referencesTable">
+                <tr>
+                    <td>
+                        <a href="#tableLoanTicket">
+loan_ticket                        </a>
+                    </td>
+                    <td>
+0..*                    </td>
+                    <td>
+                        <a href="#tableBorrowerLiability">
+borrower_liability                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+id                    </td>
+                    <td>
+<->                    </td>
+                    <td>
+loan_ticket_id                    </td>
+                </tr>
+            </table>
+            <h3 id="referenceBorrowerAssetLoanTicket">
+2.6. Reference borrower_asset_loan_ticket            </h3>
+            <h4>
+2.6.1. Columns            </h4>
+            <table class="referencesTable">
+                <tr>
+                    <td>
+                        <a href="#tableLoanTicket">
+loan_ticket                        </a>
+                    </td>
+                    <td>
+0..*                    </td>
+                    <td>
+                        <a href="#tableBorrowerAsset">
+borrower_asset                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+id                    </td>
+                    <td>
+<->                    </td>
+                    <td>
+loan_ticket_id                    </td>
+                </tr>
+            </table>
+            <h3 id="referenceEmploymentDetailBorrower">
+2.7. Reference employment_detail_borrower            </h3>
+            <h4>
+2.7.1. Columns            </h4>
+            <table class="referencesTable">
+                <tr>
+                    <td>
+                        <a href="#tableBorrower">
+borrower                        </a>
+                    </td>
+                    <td>
+0..*                    </td>
+                    <td>
+                        <a href="#tableEmploymentDetail">
+employment_detail                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+id                    </td>
+                    <td>
+<->                    </td>
+                    <td>
+borrower_id                    </td>
+                </tr>
+            </table>
+            <h3 id="referenceInvestorProposalInvestor">
+2.8. Reference investor_proposal_investor            </h3>
+            <h4>
+2.8.1. Columns            </h4>
+            <table class="referencesTable">
+                <tr>
+                    <td>
+                        <a href="#tableInvestor">
+investor                        </a>
+                    </td>
+                    <td>
+0..*                    </td>
+                    <td>
+                        <a href="#tableInvestorProposal">
+investor_proposal                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+id                    </td>
+                    <td>
+<->                    </td>
+                    <td>
+investor_id                    </td>
+                </tr>
+            </table>
+            <h3 id="referenceInvestorProposalLoanTicket">
+2.9. Reference investor_proposal_loan_ticket            </h3>
+            <h4>
+2.9.1. Columns            </h4>
+            <table class="referencesTable">
+                <tr>
+                    <td>
+                        <a href="#tableLoanTicket">
+loan_ticket                        </a>
+                    </td>
+                    <td>
+0..*                    </td>
+                    <td>
+                        <a href="#tableInvestorProposal">
+investor_proposal                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+id                    </td>
+                    <td>
+<->                    </td>
+                    <td>
+loan_ticket_id                    </td>
+                </tr>
+            </table>
+            <h3 id="referenceLoanTktFflInvestorPrp">
+2.10. Reference loan_tkt_ffl_investor_prp            </h3>
+            <h4>
+2.10.1. Columns            </h4>
+            <table class="referencesTable">
+                <tr>
+                    <td>
+                        <a href="#tableInvestorProposal">
+investor_proposal                        </a>
+                    </td>
+                    <td>
+0..*                    </td>
+                    <td>
+                        <a href="#tableLoanTicketFulfillment">
+loan_ticket_fulfillment                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+id                    </td>
+                    <td>
+<->                    </td>
+                    <td>
+investor_proposal_id                    </td>
+                </tr>
+            </table>
+            <h3 id="referenceLoanRepaySchLoanTktFfl">
+2.11. Reference loan_repay_sch_loan_tkt_ffl            </h3>
+            <h4>
+2.11.1. Columns            </h4>
+            <table class="referencesTable">
+                <tr>
+                    <td>
+                        <a href="#tableLoanTicketFulfillment">
+loan_ticket_fulfillment                        </a>
+                    </td>
+                    <td>
+0..*                    </td>
+                    <td>
+                        <a href="#tableLoanRepaymentSchedule">
+loan_repayment_schedule                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+id                    </td>
+                    <td>
+<->                    </td>
+                    <td>
+loan_ticket_fulfillment_id                    </td>
+                </tr>
+            </table>
+            <h3 id="referenceAccStatementTransType">
+2.12. Reference acc_statement_trans_type            </h3>
+            <h4>
+2.12.1. Columns            </h4>
+            <table class="referencesTable">
+                <tr>
+                    <td>
+                        <a href="#tableTransactionType">
+transaction_type                        </a>
+                    </td>
+                    <td>
+0..*                    </td>
+                    <td>
+                        <a href="#tableAccountStatement">
+account_statement                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+transaction_type_code                    </td>
+                    <td>
+<->                    </td>
+                    <td>
+transaction_type_code                    </td>
+                </tr>
+            </table>
+            <h3 id="referencePaymentMethodAccountType">
+2.13. Reference payment_method_account_type            </h3>
+            <h4>
+2.13.1. Columns            </h4>
+            <table class="referencesTable">
+                <tr>
+                    <td>
+                        <a href="#tableAccountType">
+account_type                        </a>
+                    </td>
+                    <td>
+0..*                    </td>
+                    <td>
+                        <a href="#tablePaymentMethod">
+payment_method                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+account_type_code                    </td>
+                    <td>
+<->                    </td>
+                    <td>
+account_type_code                    </td>
+                </tr>
+            </table>
+            <h3 id="referenceStateOrRegionCountry">
+2.14. Reference state_or_region_country            </h3>
+            <h4>
+2.14.1. Columns            </h4>
+            <table class="referencesTable">
+                <tr>
+                    <td>
+                        <a href="#tableCountry">
+country                        </a>
+                    </td>
+                    <td>
+0..*                    </td>
+                    <td>
+                        <a href="#tableStateOrRegion">
+state_or_region                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+id                    </td>
+                    <td>
+<->                    </td>
+                    <td>
+country_id                    </td>
+                </tr>
+            </table>
+            <h3 id="referenceCityLocationsStateOrRegion">
+2.15. Reference city_locations_state_or_region            </h3>
+            <h4>
+2.15.1. Columns            </h4>
+            <table class="referencesTable">
+                <tr>
+                    <td>
+                        <a href="#tableStateOrRegion">
+state_or_region                        </a>
+                    </td>
+                    <td>
+0..*                    </td>
+                    <td>
+                        <a href="#tableCityLocations">
+city_locations                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+id                    </td>
+                    <td>
+<->                    </td>
+                    <td>
+state_or_region_id                    </td>
+                </tr>
+            </table>
+            <h3 id="referenceBorrowerAddressBorrower">
+2.16. Reference borrower_address_borrower            </h3>
+            <h4>
+2.16.1. Columns            </h4>
+            <table class="referencesTable">
+                <tr>
+                    <td>
+                        <a href="#tableBorrower">
+borrower                        </a>
+                    </td>
+                    <td>
+0..*                    </td>
+                    <td>
+                        <a href="#tableBorrowerAddress">
+borrower_address                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+id                    </td>
+                    <td>
+<->                    </td>
+                    <td>
+borrower_id                    </td>
+                </tr>
+            </table>
+            <h3 id="referenceWithdrawalTransactionHistory">
+2.17. Reference withdrawal_transaction_history            </h3>
+            <h4>
+2.17.1. Columns            </h4>
+            <table class="referencesTable">
+                <tr>
+                    <td>
+                        <a href="#tableTransactionHistory">
+transaction_history                        </a>
+                    </td>
+                    <td>
+0..*                    </td>
+                    <td>
+                        <a href="#tableWithdrawal">
+withdrawal                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+id                    </td>
+                    <td>
+<->                    </td>
+                    <td>
+transaction_history_id                    </td>
+                </tr>
+            </table>
+            <h3 id="referenceWithdrawalBankAccount">
+2.18. Reference withdrawal_bank_account            </h3>
+            <h4>
+2.18.1. Columns            </h4>
+            <table class="referencesTable">
+                <tr>
+                    <td>
+                        <a href="#tableBankAccount">
+bank_account                        </a>
+                    </td>
+                    <td>
+0..*                    </td>
+                    <td>
+                        <a href="#tableWithdrawal">
+withdrawal                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+id                    </td>
+                    <td>
+<->                    </td>
+                    <td>
+bank_account_id                    </td>
+                </tr>
+            </table>
+            <h3 id="referenceWithdrawalBorrower">
+2.19. Reference withdrawal_borrower            </h3>
+            <h4>
+2.19.1. Columns            </h4>
+            <table class="referencesTable">
+                <tr>
+                    <td>
+                        <a href="#tableBorrower">
+borrower                        </a>
+                    </td>
+                    <td>
+0..*                    </td>
+                    <td>
+                        <a href="#tableWithdrawal">
+withdrawal                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+id                    </td>
+                    <td>
+<->                    </td>
+                    <td>
+borrower_id                    </td>
+                </tr>
+            </table>
+            <h3 id="referenceInvestmentInvestor">
+2.20. Reference investment_investor            </h3>
+            <h4>
+2.20.1. Columns            </h4>
+            <table class="referencesTable">
+                <tr>
+                    <td>
+                        <a href="#tableInvestor">
+investor                        </a>
+                    </td>
+                    <td>
+0..*                    </td>
+                    <td>
+                        <a href="#tableInvestment">
+investment                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+id                    </td>
+                    <td>
+<->                    </td>
+                    <td>
+investor_id                    </td>
+                </tr>
+            </table>
+            <h3 id="referenceInvestmentLoanGrade">
+2.21. Reference investment_loan_grade            </h3>
+            <h4>
+2.21.1. Columns            </h4>
+            <table class="referencesTable">
+                <tr>
+                    <td>
+                        <a href="#tableLoanGrade">
+loan_grade                        </a>
+                    </td>
+                    <td>
+0..*                    </td>
+                    <td>
+                        <a href="#tableInvestment">
+investment                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+id                    </td>
+                    <td>
+<->                    </td>
+                    <td>
+loan_grade_id                    </td>
+                </tr>
+            </table>
+            <h3 id="referenceLoanBorrower">
+2.22. Reference loan_borrower            </h3>
+            <h4>
+2.22.1. Columns            </h4>
+            <table class="referencesTable">
+                <tr>
+                    <td>
+                        <a href="#tableBorrower">
+borrower                        </a>
+                    </td>
+                    <td>
+0..*                    </td>
+                    <td>
+                        <a href="#tableLoan">
+loan                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+id                    </td>
+                    <td>
+<->                    </td>
+                    <td>
+borrower_id                    </td>
+                </tr>
+            </table>
+            <h3 id="referenceListOfPayments">
+2.23. Reference list_of_payments            </h3>
+            <p class="infoField">
+                <strong>
+Description:                 </strong>
+List of Loan payments. These are payments made by individual investors            </p>
+            <h4>
+2.23.1. Columns            </h4>
+            <table class="referencesTable">
+                <tr>
+                    <td>
+                        <a href="#tablePayment">
+payment                        </a>
+                    </td>
+                    <td>
+0..*                    </td>
+                    <td>
+                        <a href="#tableLoan">
+loan                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+id                    </td>
+                    <td>
+<->                    </td>
+                    <td>
+payment_id                    </td>
+                </tr>
+            </table>
+            <h3 id="referenceMonthlyPaymentLoan">
+2.24. Reference monthly_payment_loan            </h3>
+            <h4>
+2.24.1. Columns            </h4>
+            <table class="referencesTable">
+                <tr>
+                    <td>
+                        <a href="#tableLoan">
+loan                        </a>
+                    </td>
+                    <td>
+0..*                    </td>
+                    <td>
+                        <a href="#tableMonthlyPayment">
+monthly_payment                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+id                    </td>
+                    <td>
+<->                    </td>
+                    <td>
+loan_id                    </td>
+                </tr>
+            </table>
+            <h3 id="referenceMonthlyPaymentPayment">
+2.25. Reference monthly_payment_payment            </h3>
+            <h4>
+2.25.1. Columns            </h4>
+            <table class="referencesTable">
+                <tr>
+                    <td>
+                        <a href="#tablePayment">
+payment                        </a>
+                    </td>
+                    <td>
+0..*                    </td>
+                    <td>
+                        <a href="#tableMonthlyPayment">
+monthly_payment                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+id                    </td>
+                    <td>
+<->                    </td>
+                    <td>
+payment_id                    </td>
+                </tr>
+            </table>
+            <h3 id="referenceMonthlyPaymentBorrower">
+2.26. Reference monthly_payment_borrower            </h3>
+            <h4>
+2.26.1. Columns            </h4>
+            <table class="referencesTable">
+                <tr>
+                    <td>
+                        <a href="#tableBorrower">
+borrower                        </a>
+                    </td>
+                    <td>
+0..*                    </td>
+                    <td>
+                        <a href="#tableMonthlyPayment">
+monthly_payment                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+id                    </td>
+                    <td>
+<->                    </td>
+                    <td>
+borrower_id                    </td>
+                </tr>
+            </table>
+            <h3 id="referenceDefaultCurrency">
+2.27. Reference default_currency            </h3>
+            <h4>
+2.27.1. Columns            </h4>
+            <table class="referencesTable">
+                <tr>
+                    <td>
+                        <a href="#tableCurrency">
+currency                        </a>
+                    </td>
+                    <td>
+0..*                    </td>
+                    <td>
+                        <a href="#tableBorrower">
+borrower                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+id                    </td>
+                    <td>
+<->                    </td>
+                    <td>
+currency_id                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="areasDiv">
+            <h2 id="areas">
+3. Subject areas            </h2>
+            <h3 id="areaBorrower">
+3.1. Subject area Borrower            </h3>
+            <h4>
+3.1.1. Tables            </h4>
+            <ul class="subjectAreaList">
+                <li>
+                    <a href="#tableBorrower">
+borrower                    </a>
+                </li>
+                <li>
+                    <a href="#tableLoanTicket">
+loan_ticket                    </a>
+                </li>
+                <li>
+                    <a href="#tableBorrowerLiability">
+borrower_liability                    </a>
+                </li>
+                <li>
+                    <a href="#tableBorrowerAsset">
+borrower_asset                    </a>
+                </li>
+                <li>
+                    <a href="#tableEmploymentDetail">
+employment_detail                    </a>
+                </li>
+                <li>
+                    <a href="#tableBorrowerAddress">
+borrower_address                    </a>
+                </li>
+            </ul>
+            <h4>
+3.1.2. References            </h4>
+            <ul class="subjectAreaList">
+                <li>
+                    <a href="#referenceNomineeInvestor">
+nominee_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referencePaymentMethodInvestor">
+payment_method_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referenceAccountStatementInvestor">
+account_statement_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referenceLoanTicketBorrower">
+loan_ticket_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceBorrowerLiabilityLoanTicket">
+borrower_liability_loan_ticket                    </a>
+                </li>
+                <li>
+                    <a href="#referenceBorrowerAssetLoanTicket">
+borrower_asset_loan_ticket                    </a>
+                </li>
+                <li>
+                    <a href="#referenceEmploymentDetailBorrower">
+employment_detail_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceInvestorProposalInvestor">
+investor_proposal_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referenceInvestorProposalLoanTicket">
+investor_proposal_loan_ticket                    </a>
+                </li>
+                <li>
+                    <a href="#referenceLoanTktFflInvestorPrp">
+loan_tkt_ffl_investor_prp                    </a>
+                </li>
+                <li>
+                    <a href="#referenceLoanRepaySchLoanTktFfl">
+loan_repay_sch_loan_tkt_ffl                    </a>
+                </li>
+                <li>
+                    <a href="#referenceAccStatementTransType">
+acc_statement_trans_type                    </a>
+                </li>
+                <li>
+                    <a href="#referencePaymentMethodAccountType">
+payment_method_account_type                    </a>
+                </li>
+                <li>
+                    <a href="#referenceStateOrRegionCountry">
+state_or_region_country                    </a>
+                </li>
+                <li>
+                    <a href="#referenceCityLocationsStateOrRegion">
+city_locations_state_or_region                    </a>
+                </li>
+                <li>
+                    <a href="#referenceBorrowerAddressBorrower">
+borrower_address_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceWithdrawalTransactionHistory">
+withdrawal_transaction_history                    </a>
+                </li>
+                <li>
+                    <a href="#referenceWithdrawalBankAccount">
+withdrawal_bank_account                    </a>
+                </li>
+                <li>
+                    <a href="#referenceWithdrawalBorrower">
+withdrawal_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceInvestmentInvestor">
+investment_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referenceInvestmentLoanGrade">
+investment_loan_grade                    </a>
+                </li>
+                <li>
+                    <a href="#referenceLoanBorrower">
+loan_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceListOfPayments">
+list_of_payments                    </a>
+                </li>
+                <li>
+                    <a href="#referenceMonthlyPaymentLoan">
+monthly_payment_loan                    </a>
+                </li>
+                <li>
+                    <a href="#referenceMonthlyPaymentPayment">
+monthly_payment_payment                    </a>
+                </li>
+                <li>
+                    <a href="#referenceMonthlyPaymentBorrower">
+monthly_payment_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceDefaultCurrency">
+default_currency                    </a>
+                </li>
+            </ul>
+            <h3 id="areaLoan fulfillment and repayment">
+3.2. Subject area Loan Fulfillment and Repayment            </h3>
+            <h4>
+3.2.1. Tables            </h4>
+            <ul class="subjectAreaList">
+                <li>
+                    <a href="#tableInvestorProposal">
+investor_proposal                    </a>
+                </li>
+                <li>
+                    <a href="#tableLoanTicketFulfillment">
+loan_ticket_fulfillment                    </a>
+                </li>
+                <li>
+                    <a href="#tableLoanRepaymentSchedule">
+loan_repayment_schedule                    </a>
+                </li>
+            </ul>
+            <h4>
+3.2.2. References            </h4>
+            <ul class="subjectAreaList">
+                <li>
+                    <a href="#referenceNomineeInvestor">
+nominee_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referencePaymentMethodInvestor">
+payment_method_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referenceAccountStatementInvestor">
+account_statement_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referenceLoanTicketBorrower">
+loan_ticket_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceBorrowerLiabilityLoanTicket">
+borrower_liability_loan_ticket                    </a>
+                </li>
+                <li>
+                    <a href="#referenceBorrowerAssetLoanTicket">
+borrower_asset_loan_ticket                    </a>
+                </li>
+                <li>
+                    <a href="#referenceEmploymentDetailBorrower">
+employment_detail_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceInvestorProposalInvestor">
+investor_proposal_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referenceInvestorProposalLoanTicket">
+investor_proposal_loan_ticket                    </a>
+                </li>
+                <li>
+                    <a href="#referenceLoanTktFflInvestorPrp">
+loan_tkt_ffl_investor_prp                    </a>
+                </li>
+                <li>
+                    <a href="#referenceLoanRepaySchLoanTktFfl">
+loan_repay_sch_loan_tkt_ffl                    </a>
+                </li>
+                <li>
+                    <a href="#referenceAccStatementTransType">
+acc_statement_trans_type                    </a>
+                </li>
+                <li>
+                    <a href="#referencePaymentMethodAccountType">
+payment_method_account_type                    </a>
+                </li>
+                <li>
+                    <a href="#referenceStateOrRegionCountry">
+state_or_region_country                    </a>
+                </li>
+                <li>
+                    <a href="#referenceCityLocationsStateOrRegion">
+city_locations_state_or_region                    </a>
+                </li>
+                <li>
+                    <a href="#referenceBorrowerAddressBorrower">
+borrower_address_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceWithdrawalTransactionHistory">
+withdrawal_transaction_history                    </a>
+                </li>
+                <li>
+                    <a href="#referenceWithdrawalBankAccount">
+withdrawal_bank_account                    </a>
+                </li>
+                <li>
+                    <a href="#referenceWithdrawalBorrower">
+withdrawal_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceInvestmentInvestor">
+investment_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referenceInvestmentLoanGrade">
+investment_loan_grade                    </a>
+                </li>
+                <li>
+                    <a href="#referenceLoanBorrower">
+loan_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceListOfPayments">
+list_of_payments                    </a>
+                </li>
+                <li>
+                    <a href="#referenceMonthlyPaymentLoan">
+monthly_payment_loan                    </a>
+                </li>
+                <li>
+                    <a href="#referenceMonthlyPaymentPayment">
+monthly_payment_payment                    </a>
+                </li>
+                <li>
+                    <a href="#referenceMonthlyPaymentBorrower">
+monthly_payment_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceDefaultCurrency">
+default_currency                    </a>
+                </li>
+            </ul>
+            <h3 id="areaInvestor">
+3.3. Subject area Investor            </h3>
+            <h4>
+3.3.1. Tables            </h4>
+            <ul class="subjectAreaList">
+                <li>
+                    <a href="#tableInvestor">
+investor                    </a>
+                </li>
+                <li>
+                    <a href="#tablePaymentMethod">
+payment_method                    </a>
+                </li>
+                <li>
+                    <a href="#tableNominee">
+nominee                    </a>
+                </li>
+                <li>
+                    <a href="#tableAccountStatement">
+account_statement                    </a>
+                </li>
+                <li>
+                    <a href="#tableTransactionType">
+transaction_type                    </a>
+                </li>
+                <li>
+                    <a href="#tableAccountType">
+account_type                    </a>
+                </li>
+            </ul>
+            <h4>
+3.3.2. References            </h4>
+            <ul class="subjectAreaList">
+                <li>
+                    <a href="#referenceNomineeInvestor">
+nominee_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referencePaymentMethodInvestor">
+payment_method_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referenceAccountStatementInvestor">
+account_statement_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referenceLoanTicketBorrower">
+loan_ticket_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceBorrowerLiabilityLoanTicket">
+borrower_liability_loan_ticket                    </a>
+                </li>
+                <li>
+                    <a href="#referenceBorrowerAssetLoanTicket">
+borrower_asset_loan_ticket                    </a>
+                </li>
+                <li>
+                    <a href="#referenceEmploymentDetailBorrower">
+employment_detail_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceInvestorProposalInvestor">
+investor_proposal_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referenceInvestorProposalLoanTicket">
+investor_proposal_loan_ticket                    </a>
+                </li>
+                <li>
+                    <a href="#referenceLoanTktFflInvestorPrp">
+loan_tkt_ffl_investor_prp                    </a>
+                </li>
+                <li>
+                    <a href="#referenceLoanRepaySchLoanTktFfl">
+loan_repay_sch_loan_tkt_ffl                    </a>
+                </li>
+                <li>
+                    <a href="#referenceAccStatementTransType">
+acc_statement_trans_type                    </a>
+                </li>
+                <li>
+                    <a href="#referencePaymentMethodAccountType">
+payment_method_account_type                    </a>
+                </li>
+                <li>
+                    <a href="#referenceStateOrRegionCountry">
+state_or_region_country                    </a>
+                </li>
+                <li>
+                    <a href="#referenceCityLocationsStateOrRegion">
+city_locations_state_or_region                    </a>
+                </li>
+                <li>
+                    <a href="#referenceBorrowerAddressBorrower">
+borrower_address_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceWithdrawalTransactionHistory">
+withdrawal_transaction_history                    </a>
+                </li>
+                <li>
+                    <a href="#referenceWithdrawalBankAccount">
+withdrawal_bank_account                    </a>
+                </li>
+                <li>
+                    <a href="#referenceWithdrawalBorrower">
+withdrawal_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceInvestmentInvestor">
+investment_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referenceInvestmentLoanGrade">
+investment_loan_grade                    </a>
+                </li>
+                <li>
+                    <a href="#referenceLoanBorrower">
+loan_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceListOfPayments">
+list_of_payments                    </a>
+                </li>
+                <li>
+                    <a href="#referenceMonthlyPaymentLoan">
+monthly_payment_loan                    </a>
+                </li>
+                <li>
+                    <a href="#referenceMonthlyPaymentPayment">
+monthly_payment_payment                    </a>
+                </li>
+                <li>
+                    <a href="#referenceMonthlyPaymentBorrower">
+monthly_payment_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceDefaultCurrency">
+default_currency                    </a>
+                </li>
+            </ul>
+            <h3 id="areaGeolocations">
+3.4. Subject area Geolocations            </h3>
+            <h4>
+3.4.1. Tables            </h4>
+            <ul class="subjectAreaList">
+                <li>
+                    <a href="#tableCountry">
+country                    </a>
+                </li>
+                <li>
+                    <a href="#tableStateOrRegion">
+state_or_region                    </a>
+                </li>
+                <li>
+                    <a href="#tableCityLocations">
+city_locations                    </a>
+                </li>
+            </ul>
+            <h4>
+3.4.2. References            </h4>
+            <ul class="subjectAreaList">
+                <li>
+                    <a href="#referenceNomineeInvestor">
+nominee_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referencePaymentMethodInvestor">
+payment_method_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referenceAccountStatementInvestor">
+account_statement_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referenceLoanTicketBorrower">
+loan_ticket_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceBorrowerLiabilityLoanTicket">
+borrower_liability_loan_ticket                    </a>
+                </li>
+                <li>
+                    <a href="#referenceBorrowerAssetLoanTicket">
+borrower_asset_loan_ticket                    </a>
+                </li>
+                <li>
+                    <a href="#referenceEmploymentDetailBorrower">
+employment_detail_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceInvestorProposalInvestor">
+investor_proposal_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referenceInvestorProposalLoanTicket">
+investor_proposal_loan_ticket                    </a>
+                </li>
+                <li>
+                    <a href="#referenceLoanTktFflInvestorPrp">
+loan_tkt_ffl_investor_prp                    </a>
+                </li>
+                <li>
+                    <a href="#referenceLoanRepaySchLoanTktFfl">
+loan_repay_sch_loan_tkt_ffl                    </a>
+                </li>
+                <li>
+                    <a href="#referenceAccStatementTransType">
+acc_statement_trans_type                    </a>
+                </li>
+                <li>
+                    <a href="#referencePaymentMethodAccountType">
+payment_method_account_type                    </a>
+                </li>
+                <li>
+                    <a href="#referenceStateOrRegionCountry">
+state_or_region_country                    </a>
+                </li>
+                <li>
+                    <a href="#referenceCityLocationsStateOrRegion">
+city_locations_state_or_region                    </a>
+                </li>
+                <li>
+                    <a href="#referenceBorrowerAddressBorrower">
+borrower_address_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceWithdrawalTransactionHistory">
+withdrawal_transaction_history                    </a>
+                </li>
+                <li>
+                    <a href="#referenceWithdrawalBankAccount">
+withdrawal_bank_account                    </a>
+                </li>
+                <li>
+                    <a href="#referenceWithdrawalBorrower">
+withdrawal_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceInvestmentInvestor">
+investment_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referenceInvestmentLoanGrade">
+investment_loan_grade                    </a>
+                </li>
+                <li>
+                    <a href="#referenceLoanBorrower">
+loan_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceListOfPayments">
+list_of_payments                    </a>
+                </li>
+                <li>
+                    <a href="#referenceMonthlyPaymentLoan">
+monthly_payment_loan                    </a>
+                </li>
+                <li>
+                    <a href="#referenceMonthlyPaymentPayment">
+monthly_payment_payment                    </a>
+                </li>
+                <li>
+                    <a href="#referenceMonthlyPaymentBorrower">
+monthly_payment_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceDefaultCurrency">
+default_currency                    </a>
+                </li>
+            </ul>
+            <h3 id="areaContent & pages">
+3.5. Subject area Content & Pages            </h3>
+            <h4>
+3.5.1. Tables            </h4>
+            <ul class="subjectAreaList">
+                <li>
+                    <a href="#tablePage">
+page                    </a>
+                </li>
+                <li>
+                    <a href="#tableTeamMember">
+team_member                    </a>
+                </li>
+            </ul>
+            <h4>
+3.5.2. References            </h4>
+            <ul class="subjectAreaList">
+                <li>
+                    <a href="#referenceNomineeInvestor">
+nominee_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referencePaymentMethodInvestor">
+payment_method_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referenceAccountStatementInvestor">
+account_statement_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referenceLoanTicketBorrower">
+loan_ticket_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceBorrowerLiabilityLoanTicket">
+borrower_liability_loan_ticket                    </a>
+                </li>
+                <li>
+                    <a href="#referenceBorrowerAssetLoanTicket">
+borrower_asset_loan_ticket                    </a>
+                </li>
+                <li>
+                    <a href="#referenceEmploymentDetailBorrower">
+employment_detail_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceInvestorProposalInvestor">
+investor_proposal_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referenceInvestorProposalLoanTicket">
+investor_proposal_loan_ticket                    </a>
+                </li>
+                <li>
+                    <a href="#referenceLoanTktFflInvestorPrp">
+loan_tkt_ffl_investor_prp                    </a>
+                </li>
+                <li>
+                    <a href="#referenceLoanRepaySchLoanTktFfl">
+loan_repay_sch_loan_tkt_ffl                    </a>
+                </li>
+                <li>
+                    <a href="#referenceAccStatementTransType">
+acc_statement_trans_type                    </a>
+                </li>
+                <li>
+                    <a href="#referencePaymentMethodAccountType">
+payment_method_account_type                    </a>
+                </li>
+                <li>
+                    <a href="#referenceStateOrRegionCountry">
+state_or_region_country                    </a>
+                </li>
+                <li>
+                    <a href="#referenceCityLocationsStateOrRegion">
+city_locations_state_or_region                    </a>
+                </li>
+                <li>
+                    <a href="#referenceBorrowerAddressBorrower">
+borrower_address_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceWithdrawalTransactionHistory">
+withdrawal_transaction_history                    </a>
+                </li>
+                <li>
+                    <a href="#referenceWithdrawalBankAccount">
+withdrawal_bank_account                    </a>
+                </li>
+                <li>
+                    <a href="#referenceWithdrawalBorrower">
+withdrawal_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceInvestmentInvestor">
+investment_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referenceInvestmentLoanGrade">
+investment_loan_grade                    </a>
+                </li>
+                <li>
+                    <a href="#referenceLoanBorrower">
+loan_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceListOfPayments">
+list_of_payments                    </a>
+                </li>
+                <li>
+                    <a href="#referenceMonthlyPaymentLoan">
+monthly_payment_loan                    </a>
+                </li>
+                <li>
+                    <a href="#referenceMonthlyPaymentPayment">
+monthly_payment_payment                    </a>
+                </li>
+                <li>
+                    <a href="#referenceMonthlyPaymentBorrower">
+monthly_payment_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceDefaultCurrency">
+default_currency                    </a>
+                </li>
+            </ul>
+            <h3 id="areaPayments & withdrawals">
+3.6. Subject area Payments & Withdrawals            </h3>
+            <h4>
+3.6.1. Tables            </h4>
+            <ul class="subjectAreaList">
+                <li>
+                    <a href="#tableWithdrawal">
+withdrawal                    </a>
+                </li>
+                <li>
+                    <a href="#tablePayment">
+payment                    </a>
+                </li>
+                <li>
+                    <a href="#tableRefund">
+refund                    </a>
+                </li>
+            </ul>
+            <h4>
+3.6.2. References            </h4>
+            <ul class="subjectAreaList">
+                <li>
+                    <a href="#referenceNomineeInvestor">
+nominee_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referencePaymentMethodInvestor">
+payment_method_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referenceAccountStatementInvestor">
+account_statement_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referenceLoanTicketBorrower">
+loan_ticket_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceBorrowerLiabilityLoanTicket">
+borrower_liability_loan_ticket                    </a>
+                </li>
+                <li>
+                    <a href="#referenceBorrowerAssetLoanTicket">
+borrower_asset_loan_ticket                    </a>
+                </li>
+                <li>
+                    <a href="#referenceEmploymentDetailBorrower">
+employment_detail_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceInvestorProposalInvestor">
+investor_proposal_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referenceInvestorProposalLoanTicket">
+investor_proposal_loan_ticket                    </a>
+                </li>
+                <li>
+                    <a href="#referenceLoanTktFflInvestorPrp">
+loan_tkt_ffl_investor_prp                    </a>
+                </li>
+                <li>
+                    <a href="#referenceLoanRepaySchLoanTktFfl">
+loan_repay_sch_loan_tkt_ffl                    </a>
+                </li>
+                <li>
+                    <a href="#referenceAccStatementTransType">
+acc_statement_trans_type                    </a>
+                </li>
+                <li>
+                    <a href="#referencePaymentMethodAccountType">
+payment_method_account_type                    </a>
+                </li>
+                <li>
+                    <a href="#referenceStateOrRegionCountry">
+state_or_region_country                    </a>
+                </li>
+                <li>
+                    <a href="#referenceCityLocationsStateOrRegion">
+city_locations_state_or_region                    </a>
+                </li>
+                <li>
+                    <a href="#referenceBorrowerAddressBorrower">
+borrower_address_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceWithdrawalTransactionHistory">
+withdrawal_transaction_history                    </a>
+                </li>
+                <li>
+                    <a href="#referenceWithdrawalBankAccount">
+withdrawal_bank_account                    </a>
+                </li>
+                <li>
+                    <a href="#referenceWithdrawalBorrower">
+withdrawal_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceInvestmentInvestor">
+investment_investor                    </a>
+                </li>
+                <li>
+                    <a href="#referenceInvestmentLoanGrade">
+investment_loan_grade                    </a>
+                </li>
+                <li>
+                    <a href="#referenceLoanBorrower">
+loan_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceListOfPayments">
+list_of_payments                    </a>
+                </li>
+                <li>
+                    <a href="#referenceMonthlyPaymentLoan">
+monthly_payment_loan                    </a>
+                </li>
+                <li>
+                    <a href="#referenceMonthlyPaymentPayment">
+monthly_payment_payment                    </a>
+                </li>
+                <li>
+                    <a href="#referenceMonthlyPaymentBorrower">
+monthly_payment_borrower                    </a>
+                </li>
+                <li>
+                    <a href="#referenceDefaultCurrency">
+default_currency                    </a>
+                </li>
+            </ul>
+        </div>
+    </body>
+</html>
