@@ -71,6 +71,12 @@ class User(AbstractUser):
         blank=True, null=True,
         help_text=_("Legal Last names of the client."))
 
+    email = models.CharField(
+        verbose_name=_('Email Address'),
+        max_length=125,
+        unique=True,
+        help_text=_("Email address of the client."))
+
     def get_absolute_url(self):
         """Get url for user's detail view.
 
