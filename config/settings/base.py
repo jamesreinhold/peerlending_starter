@@ -287,9 +287,9 @@ ACCOUNT_ADAPTER = "peer_lending.users.adapters.AccountAdapter"
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 SOCIALACCOUNT_ADAPTER = "peer_lending.users.adapters.SocialAccountAdapter"
 
-ACCOUNT_FORMS = (
-    {'signup': 'peer_lending.users.forms.CustomSignupForm'}
-)
+# ACCOUNT_FORMS = (
+#     {'signup': 'peer_lending.users.forms.CustomSignupForm'}
+# )
 # django-compressor
 # ------------------------------------------------------------------------------
 # https://django-compressor.readthedocs.io/en/latest/quickstart/#installation
